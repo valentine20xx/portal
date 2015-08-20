@@ -1,0 +1,26 @@
+{% extends "converter/base.html" %}
+{% block title %}Удаление справочника{% endblock %}
+{% block navigation %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "home" %}">Home</a></li>
+        <li><a href="{% url "ss_list" %}">Systems</a></li>
+        <li><a href="{% url "ss_detail" object.master_id.code %}">{{ object.master_id.code }}</a></li>
+        <li><a href="{% url "ref_list" object.master_id.code  %}">References</a></li>
+        <li class="active">{{ object.code }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p class="text-danger">Удалить справочник с кодом : {{ object.code }}</p>
+        <button class="btn btn-danger" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span> OK
+        </button>
+        <button class="btn btn-default" type="button"
+                onclick="location.href = '{% url "ref_list" object.master_id.code %}'"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span> К списку систем
+        </button>
+    </form>
+{% endblock %}

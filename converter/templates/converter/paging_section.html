@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-md-2">
+        <form method="get">
+            <select id="paginate_by">
+                                        {% with '5 10 15' as list %}
+{#                {% with '1 2 3' as list %}#}
+                    {% for x in list.split %}
+                        <option {% if x == paginator.per_page|stringformat:"d" %}selected{% endif %}>{{ x }}</option>
+                    {% endfor %}
+                {% endwith %}
+            </select>
+        </form>
+    </div>
+
+    <div class="col-md-10">
+        <ul class="pagination" style="margin: 0;">
+            <li {% if not page_obj.has_first %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_first %}href="?page=1"{% endif %} aria-label="First">
+                         <span class="glyphicon glyphicon-backward"
+                               aria-hidden="true"></span>
+                </a>
+            </li>
+            <li {% if not page_obj.has_previous %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}"{% endif %}
+                   aria-label="Previous">
+                                  <span class="glyphicon glyphicon-triangle-left"
+                                        aria-hidden="true"></span>
+                </a>
+            </li>
+            {% for x in page_obj.main_range %}
+                <li {% if x == page_obj.number %}class="active"{% endif %}><a
+                        {% if not x == page_obj.number %}href="?page={{ x }}"{% endif %}>
+                    {{ x }}{% if x == page_obj.number %}<span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+            {% endfor %}
+            <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}"{% endif %}
+                   aria-label="Next">
+                         <span class="glyphicon glyphicon-triangle-right"
+                               aria-hidden="true"></span>
+                </a>
+            </li>
+            <li {% if not page_obj.has_last %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_last %}href="?page=last"{% endif %} aria-label="Last">
+                         <span class="glyphicon glyphicon-forward"
+                               aria-hidden="true"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    {% comment %}<div class="col-md-10">
+        <ul class="pagination">
+            <li {% if not page_obj.has_first %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_first %}href="?page=1"{% endif %} aria-label="First">
+                         <span class="glyphicon glyphicon-fast-backward"
+                               aria-hidden="true"></span>
+                </a>
+            </li>
+            <li {% if not page_obj.has_previous %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}"{% endif %}
+                   aria-label="Previous">
+                                  <span class="glyphicon glyphicon-chevron-left"
+                                        aria-hidden="true"></span>
+                </a>
+            </li>
+            {% for x in page_obj.main_range %}
+                <li {% if x == page_obj.number %}class="active"{% endif %}><a
+                        {% if not x == page_obj.number %}href="?page={{ x }}"{% endif %}>
+                    {{ x }}{% if x == page_obj.number %}<span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+            {% endfor %}
+            <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}"{% endif %}
+                   aria-label="Next">
+                         <span class="glyphicon glyphicon-chevron-right"
+                               aria-hidden="true"></span>
+                </a>
+            </li>
+            <li {% if not page_obj.has_last %}class="disabled"{% endif %}>
+                <a {% if page_obj.has_last %}href="?page=last"{% endif %} aria-label="Last">
+                         <span class="glyphicon glyphicon-fast-forward"
+                               aria-hidden="true"></span>
+                </a>
+            </li>
+        </ul>
+    </div>{% endcomment %}
+</div>
+{#<div class="row">#}
+{#    <div class="col-md-2">#}
+{#        <form method="get" style="margin: 20px 0;">#}
+{#            <select class="form-control" id="paginate_by">#}
+{#                {% with '5 10 15' as list %}#}
+{#                    {% for x in list.split %}#}
+{#                        <option {% if x == paginator.per_page|stringformat:"d" %}selected{% endif %}>{{ x }}</option>#}
+{#                    {% endfor %}#}
+{#                {% endwith %}#}
+{#            </select>#}
+{#        </form>#}
+{#    </div>#}
+{#    <div class="col-md-10">#}
+{#        <ul class="pagination">#}
+{#            <li {% if not page_obj.has_previous %}class="disabled"{% endif %}>#}
+{#                <a {% if page_obj.has_previous %}href="?page={{ page_obj.previous_page_number }}"{% endif %}#}
+{#                   aria-label="Previous">#}
+{#                    <span aria-hidden="true">&laquo;</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            {% for i in page_obj.paginator.page_range %}#}
+{#                <li {% if i == page_obj.number %}class="active"{% endif %}><a href="?page={{ i }}">#}
+{#                    {{ i }}{% if i == page_obj.number %}<span class="sr-only">(current)</span>{% endif %}</a>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#            <li {% if not page_obj.has_next %}class="disabled"{% endif %}>#}
+{#                <a {% if page_obj.has_next %}href="?page={{ page_obj.next_page_number }}"{% endif %}#}
+{#                   aria-label="Next">#}
+{#                    <span aria-hidden="true">&raquo;</span>#}
+{#                </a>#}
+{#            </li>#}
+{#        </ul>#}
+{#    </div>#}
+{#</div>#}

@@ -1,0 +1,63 @@
+{% extends "converter/base.html" %}
+
+{% block style %}
+    {{ block.super }}
+    <style>
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Error</strong> {{ error }}
+                </div>
+            {% endfor %}
+            <div class="form-group{% if field.errors %} has-error{% endif %}">
+                <label for="{{ field.auto_id }}">{{ field.label }} :</label>
+                <input id="uploadFile" placeholder="Choose File" disabled="disabled"/>
+
+                <div class="fileUpload btn btn-primary">
+                    <span>Выбрать файл</span>
+                    {{ field }}
+                </div>
+
+            </div>
+        {% endfor %}
+        <button class="btn btn-default" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span>&nbsp;&nbsp;OK
+        </button>
+        <a class="btn btn-default" href="{% url "ss_list" %}"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>&nbsp;&nbsp;К списку систем
+        </a>
+    </form>
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        document.getElementById("id_file").onchange = function () {
+            document.getElementById("uploadFile").value = this.value;
+        };
+    </script>
+{% endblock %}

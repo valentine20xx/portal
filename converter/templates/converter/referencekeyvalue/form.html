@@ -1,0 +1,43 @@
+{% extends "converter/base.html" %}
+{% load staticfiles %}
+{% block title %}{{ caption }} связки ключ-значение{% endblock %}
+{% block navigation %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "home" %}">Home</a></li>
+        <li><a href="{% url "ss_list" %}">Systems</a></li>
+        <li><a href="{% url "ss_detail" sys %}">{{ sys }}</a></li>
+        <li><a href="{% url "ref_list" sys %}">References</a></li>
+        <li><a href="{% url "ref_detail" sys ref %}">{{ ref }}</a></li>
+        <li><a href="{% url "ref_kvp_list" sys ref %}">Content</a></li>
+        <li class="active">{% if object.key %}{{ object.key }}{% else %}New{% endif %}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ form.reference_id }}
+            {% else %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error</strong> {{ error }}
+                    </div>
+                {% endfor %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label for="{{ field.auto_id }}">{{ field.label }} :</label>
+                    {{ field }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <button class="btn btn-default" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span>&nbsp;&nbsp;OK
+        </button>
+        <button class="btn btn-default" type="button" onclick="location.href = '{% url "ref_kvp_list" sys ref %}'"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>&nbsp;&nbsp;К списку
+        </button>
+    </form>
+
+{% endblock %}

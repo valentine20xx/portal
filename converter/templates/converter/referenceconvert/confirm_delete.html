@@ -1,0 +1,15 @@
+{% extends "converter/base.html" %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p class="text-danger">Удалить связку : {{ object.key_value_id_from.key }} -> {{ object.key_value_id_to.key }}</p>
+        <button class="btn btn-danger" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span> OK
+        </button>
+        <button class="btn btn-default" type="button" onclick="location.href = '{% url "ref_conv_list5" object.key_value_id_from.reference_id.master_id.code object.key_value_id_from.reference_id.code object.key_value_id_to.reference_id.master_id.code object.key_value_id_to.reference_id.code %}'"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span> К списку связок
+        </button>
+    </form>
+{% endblock %}

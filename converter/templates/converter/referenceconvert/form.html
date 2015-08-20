@@ -1,0 +1,43 @@
+{% extends "converter/base.html" %}
+{% load staticfiles %}
+{% block title %}{{ caption }}{% endblock %}
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "common/css/bootstrap-select.css" %}">{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ form.reference_id }}
+            {% else %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error</strong> {{ error }}
+                    </div>
+                {% endfor %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label for="{{ field.auto_id }}">{{ field.label }} :</label>
+                    {{ field }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <button class="btn btn-default" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span>&nbsp;OK
+        </button>
+        <button class="btn btn-default" type="button"
+                onclick="location.href = '{% url "ref_conv_list5" sys_from ref_from sys_to ref_to %}'"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>&nbsp;К&nbsp;списку
+        </button>
+    </form>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static "common/js/bootstrap-select.js" %}"></script>
+    <script>
+        $("#id_key_value_id_from").selectpicker({width: "100%"});
+        $("#id_key_value_id_to").selectpicker({width: "100%"});
+    </script>
+{% endblock %}

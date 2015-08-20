@@ -1,0 +1,35 @@
+{% extends "converter/base.html" %}
+{% block navigation %}
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url "home" %}">
+                Home
+            </a>
+        </li>
+        <li class="active">
+            Choose
+        </li>
+    </ol>
+{% endblock %}
+{% block content %}
+    {% if object_list %}
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>ID</th>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+            {% for object in object_list %}
+                <tr>
+                    <td width="33.3%">{{ object.id }}</td>
+                    <td width="33.3%">{{ object.code }}</td>
+                    <td width="33.3%">{{ object.fullname }}
+                    <td><a href='{% url "ref_conv_list4" sys_from ref_from object.code %}'>>>></a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include "converter/paging_section.html" %}
+    {% else %}
+        <p>Список ключ-значение пуст</p>
+    {% endif %}
+{% endblock %}

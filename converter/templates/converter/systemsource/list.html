@@ -1,0 +1,204 @@
+{% extends "converter/base.html" %}
+
+{% load staticfiles %}
+{% load model_to_json %}
+
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "common/css/bootstrap-select.css" %}">
+    <style>
+        .unselectable {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .sort {
+            float: right;
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+    </style>
+{% endblock %}
+{% block title %}Список систем{% endblock %}
+
+{% block navigation %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "home" %}">Home</a></li>
+        <li class="active">Systems</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="button_margin">
+        <a class="btn btn-default" href="{% url "ss_create" %}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            &nbsp;Добавить
+        </a>
+        <a class="btn btn-default" onclick="javascript:location.reload(); ">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            &nbsp;Обновить
+        </a>
+        <a class="btn btn-default" href="{% url "ss_filter" %}">
+            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+            &nbsp;Отфильтровать
+        </a>
+        <a class="btn btn-default" href="{% url "ss_upload" %}">
+            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+            &nbsp;Загрузить csv-файл
+        </a>
+        <a class="btn btn-default" id="ajax">
+            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+            &nbsp;Ajax
+        </a>
+    </div>
+    {% if object_list %}
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+                    <input type="text" class="form-control" placeholder="Search" ng-model="searchString">
+                    <div class="input-group-addon" ng-click="searchString = ''"><i class="glyphicon glyphicon-trash"></i></div>
+                </div>
+                Поиск по:
+                <label checkbox-inline><input type="checkbox" id="checkbox_code" ng-model="checkboxModel.code">&nbsp;Коду</label>
+                <label checkbox-inline><input type="checkbox" id="checkbox_fullname" ng-model="checkboxModel.fullname">&nbsp;Названию</label>
+            </div>
+        </form>
+        <table class="table table-bordered table-hover">
+            <thead>
+            {% verbatim %}
+            <tr>
+                <th width="30%" ng-click="sortType = 'pk'; sortReverse = !sortReverse" class="unselectable">ID
+                    <span ng-show="sortType == 'pk' && !sortReverse" class="glyphicon glyphicon-sort-by-alphabet sort"></span>
+                    <span ng-show="sortType == 'pk' && sortReverse" class="glyphicon glyphicon-sort-by-alphabet-alt sort"></span>
+                </th>
+                <th width="30%" ng-click="sortType = 'code'; sortReverse = !sortReverse" class="unselectable">Код
+                    <span ng-show="sortType == 'code' && !sortReverse" class="glyphicon glyphicon-sort-by-alphabet sort"></span>
+                    <span ng-show="sortType == 'code' && sortReverse" class="glyphicon glyphicon-sort-by-alphabet-alt sort"></span>
+                </th>
+                <th width="30%" ng-click="sortType = 'fullname'; sortReverse = !sortReverse" class="unselectable">Полное назвние
+                    <span ng-show="sortType == 'fullname' && !sortReverse" class="glyphicon glyphicon-sort-by-alphabet sort"></span>
+                    <span ng-show="sortType == 'fullname' && sortReverse" class="glyphicon glyphicon-sort-by-alphabet-alt sort"></span>
+                </th>
+                <th width="10%">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="elem in objs | orderBy:sortType:sortReverse | tableFilter:searchString:checkboxModel">
+                <td><a href="{{ elem.absolute_url }}">{{ elem.pk }}</a></td>
+                <td>{{ elem.code }}</td>
+                <td>{{ elem.fullname }}</td>
+                <td>
+                    <a class="btn btn-default" href="{{ elem.update_url }}">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-default" href="{{ elem.delete_url }}">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+            {% endverbatim %}
+        </table>
+        {% include "converter/paging_section.html" %}
+    {% else %}
+        <p>Список систем пуст</p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static "common/js/angular.min.js" %}"></script>
+    <script src="{% static "common/js/bootstrap-select.min.js" %}"></script>
+    <script>
+{#        console.log({{ object_list|queryset2json }});#}
+        var cookieSave = {expires: 7, path: "/"};
+        var portalApp = angular.module("portalApp", []);
+        portalApp.controller("mainController", function ($scope) {
+            $scope.sortType = "";
+            $scope.sortReverse = false;
+            $scope.searchString = "";
+
+            var searchCode = $.cookie("searchCode");
+            var searchFullname = $.cookie("searchFullname");
+
+            $scope.checkboxModel = {
+                code: searchCode === undefined ? true : searchCode == "true",
+                fullname: searchFullname === undefined ? false : searchFullname == "true"
+            }
+
+            $scope.objs = {{ object_list|queryset2json }};
+{#             $scope.objs = {};#}
+{#            console.log($scope.objs);#}
+        });
+
+        $("#checkbox_code").click(function () {
+            if ($(this).is(":checked")) {
+                $.cookie("searchCode", true, cookieSave);
+            } else {
+                $.cookie("searchCode", false, cookieSave);
+            }
+        });
+        $("#checkbox_fullname").click(function () {
+            if ($(this).is(":checked")) {
+                $.cookie("searchFullname", true, cookieSave);
+            } else {
+                $.cookie("searchFullname", false, cookieSave);
+            }
+        });
+
+        portalApp.filter('tableFilter', function () {
+            return function (list, searchString, check) {
+                var result = [];
+
+                if (searchString == "")
+                    return list;
+
+                list.forEach(function (element, index, array) {
+                    var stringReg = new RegExp(searchString, "i");
+                    console.log(stringReg);
+                    var code = element.code.search(stringReg);
+                    var fullname = element.fullname.search(stringReg);
+
+                    console.log(code);
+                    console.log(fullname);
+
+                    if ((check.code && code > -1) || (check.fullname && fullname > -1)) {
+                        result.push(element);
+                    }
+                });
+                return result;
+            }
+        });
+
+        var paginate_by = $("#paginate_by")
+        paginate_by.selectpicker({width: "100%"});
+        paginate_by.on("change", function (e) {
+            $.cookie("paginate_by", $("#paginate_by").val(), cookieSave);
+            this.form.submit();
+        });
+
+        $("#ajax").click(function () {
+            console.log("ajax");
+            $.ajax({
+                {#                url: "",#}
+                success: function (result, status, xhr) {
+                    console.log(result);
+                    console.log(status);
+                    console.log(xhr);
+                    alert(result.data)
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        });
+    </script>
+{% endblock %}
+{#            <tr ng-repeat="elem in objs | orderBy:sortType:sortReverse | filter:{code:searchString}">#}

@@ -1,0 +1,27 @@
+{% extends "converter/base.html" %}
+{% block title %}Удаление связки ключ-значение{% endblock %}
+{% block navigation %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "home" %}">Home</a></li>
+        <li><a href="{% url "ss_list" %}">Systems</a></li>
+        <li><a href="{% url "ss_detail" object.reference_id.master_id.code %}">{{ object.reference_id.master_id.code }}</a></li>
+        <li><a href="{% url "ref_list" object.reference_id.master_id.code  %}">References</a></li>
+        <li><a href="{% url "ref_detail" object.reference_id.master_id.code object.reference_id.code %}">{{ object.reference_id.code }}</a></li>
+        <li><a href="{% url "ref_kvp_list" object.reference_id.master_id.code object.reference_id.code %}">Content</a></li>
+        <li class="active">{{ object.key }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p class="text-danger">Удалить связку с кодом : {{ object.key }}</p>
+        <button class="btn btn-danger" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span> OK
+        </button>
+        <button class="btn btn-default" type="button" onclick="location.href = '{% url "ref_kvp_list" object.reference_id.master_id.code object.reference_id.code %}'"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span> К списку связок
+        </button>
+    </form>
+{% endblock %}

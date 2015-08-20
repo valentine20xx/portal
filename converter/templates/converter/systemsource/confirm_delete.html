@@ -1,0 +1,24 @@
+{% extends "converter/base.html" %}
+{% block title %}Удаление системы{% endblock %}
+{% block navigation %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "home" %}">Home</a></li>
+        <li><a href="{% url "ss_list" %}">Systems</a></li>
+        <li class="active">{{ object.code }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        <p class="text-danger">Удалить систему с кодом : {{ object.code }}</p>
+        <button class="btn btn-danger" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span>&nbsp;OK
+        </button>
+        <a class="btn btn-default" href="{% url "ss_list" %}"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>&nbsp;К списку систем
+        </a>
+    </form>
+{% endblock %}

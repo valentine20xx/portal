@@ -1,0 +1,62 @@
+$background: #333;
+$main_color: #FFF;
+$header_height: 80px;
+$footer_height: 20px;
+$bodyMarginV: 20px;
+$bodyMarginH: 20px;
+
+$ava_height: 50px;
+$ava_width: 50px;
+
+%fixedPart {
+  position: fixed;
+  left: 0px;
+  width: 100%;
+  color: $main_color;
+
+  background: $background;
+  opacity:0.95;
+  z-index: 100;
+}
+
+@mixin padding($param) {
+  padding: ($header_height - $ava_height) / $param;
+}
+
+body {
+  background-color: $main_color;
+  margin: ($bodyMarginV + $header_height) $bodyMarginH ($bodyMarginV + $footer_height);
+}
+
+header {
+  @extend %fixedPart;
+  @include padding(2);
+  //  height: $header_height;
+  top: 0px;
+  font-size: 20px;
+}
+
+footer {
+  @extend %fixedPart;
+  @include padding(5);
+  //  height: $footer_height;
+  bottom: 0px;
+}
+
+.avatar {
+  width: $ava_height;
+  height: $ava_width;
+  margin-right: 20px;
+}
+
+.dropdown-menu {
+  li {
+    a {
+      cursor: pointer;
+    }
+  }
+}
+
+.button_margin {
+  margin-bottom: 20px;
+}

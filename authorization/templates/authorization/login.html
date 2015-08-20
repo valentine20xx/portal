@@ -1,0 +1,106 @@
+{#{% extends "admin/login.html" %}#}
+{% load staticfiles %}
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <title>Converter Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="{% static "css/auth.min.css" %}" rel="stylesheet" type="text/css"/>
+    <!-- <link rel="icon" href="data:;base64,iVBORw0KGgo="> -->
+    <link rel="shortcut icon" href="#"/>
+</head>
+<body>
+<div>
+    <form method="POST" name="login" id="loginForm">
+        {% csrf_token %}
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="popup_window">
+                        <div class="login_window_content">
+                            {% if auth_error %}
+{#                                <div class="alert alert-danger" role="alert"><strong>Fehler </strong>Login und password#}
+{#                                    sind nicht#}
+{#                                    korrekt#}
+{#                                </div>#}
+                                <div class="loginText"><strong>Fehler </strong>Login und password
+                                    sind nicht
+                                    korrekt
+                                </div>
+                            {% endif %}
+                            <div>
+                                <label id="user_id" class="loginText" for="j_username">Имя пользователя : </label>
+                                <input type="text" autocapitalize="off" autocomplete="on" name="username"
+                                       class="login-field"
+                                       id="j_username">
+                            </div>
+                            <div>
+                                <label id="password_label" class="loginText" for="j_password">Пароль : </label>
+                                <input type="password" autocomplete="on" class="login-field" id="password"
+                                       class="login-field"
+                                       name="password">
+                            </div>
+                            <div class="btn_section">
+                                <input type="submit" value="Вход" name="save" class="btn" id="log_in"
+                                       aria-disabled="false">
+                                <input type="reset" value="Сброс" class="btn">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+
+{#<html>#}
+{#<head lang="en">#}
+{#    <meta charset="UTF-8">#}
+{#    <title></title>#}
+{#    <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>#}
+{#    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">#}
+{#    <link rel="stylesheet" href="{% static "css/bootstrap-theme.min.css" %}">#}
+{#    <link rel="stylesheet" href="{% static "css/test.css" %}">#}
+{#</head>#}
+{#<body>#}
+{##}
+{#<div class="outer">#}
+{#    <div class="middle">#}
+{#        <div class="inner">#}
+{#            {% if auth_error %}#}
+{#                <div class="alert alert-danger" role="alert"><strong>Fehler </strong>Login und password sind nicht#}
+{#                    korrekt#}
+{#                </div>#}
+{#            {% endif %}#}
+{#            <form method="post" action="">#}
+{#                {% csrf_token %}#}
+{##}
+{#                <table>#}
+{##}
+{#                    <tr>#}
+{#                        <td><label id="user_id" class="loginText" for="j_username">Имя пользователя : </label></td>#}
+{#                        <td><input type="text" autocapitalize="off" autocomplete="on" name="username"#}
+{#                                   class="login-field"#}
+{#                                   id="j_username"></td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td><label id="password_label" class="loginText" for="j_password">Пароль : </label></td>#}
+{#                        <td><input type="password" autocomplete="on" class="login-field" id="password" name="password">#}
+{#                        </td>#}
+{#                    </tr>#}
+{##}
+{#                </table>#}
+{##}
+{#                <input type="submit" value="login"/>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#<script src="{% static "js/jquery-2.1.4.min.js" %}"></script>#}
+{#<script src="{% static "js/bootstrap.min.js" %}"></script>#}
+{#</body>#}
+{#</html>#}

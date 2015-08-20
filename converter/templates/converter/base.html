@@ -1,0 +1,102 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html ng-app="portalApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
+    {% block style %}
+        <link rel="stylesheet" href="{% static "common/css/bootstrap.min.css" %}">
+        {#        <link rel="stylesheet" href="{% static "common/css/bootstrap-theme.min.css" %}">#}
+        <link rel="stylesheet" href="{% static "css/test.min.css" %}">
+    {% endblock %}
+</head>
+<body>
+<header>
+    {% if user.is_authenticated %}
+        <img src="{% static "images/green_face.gif" %}" class="img-rounded avatar">
+        {{ user.first_name }} {{ user.last_name }}
+        ({{ user.username }})
+        <a class="btn btn-default" id="menu">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+            &nbsp;&nbsp;Menu</a>
+        <a class="btn btn-default" style="float: right;"
+           href="{% url "auth:logout" %}?next={{ messages.request.META.PATH_INFO }}">
+            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+            &nbsp;&nbsp;Выход
+        </a>
+    {% else %}
+        <a class="btn btn-default" style="float: right;"
+           href="{% url "auth:login" %}?next={{ messages.request.META.PATH_INFO }}">
+            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+            &nbsp;&nbsp;Вход
+        </a>
+    {% endif %}
+</header>
+<div>
+    <div id="menu_panel" style="display: none;" class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Меню</h3>
+        </div>
+        <div class="panel-body">
+            <a class="btn btn-default">One</a>
+            <a class="btn btn-default">Two</a>
+            <a class="btn btn-default">Three</a>
+        </div>
+    </div>
+    {% block navigation %}{% endblock %}
+    <div id="container" class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                {% block title %}No title{% endblock %}
+            </h3>
+        </div>
+        <div class="panel-body" ng-controller="mainController">
+            {% block content %}No content{% endblock %}
+        </div>
+    </div>
+</div>
+<footer>{% include "converter/footer.html" %}</footer>
+
+{% block scripts %}
+    <script src="{% static "common/js/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "common/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "common/js/jquery.toaster.min.js" %}"></script>
+    <script src="{% static "common/js/jquery.cookie.min.js" %}"></script>
+    <script type="text/javascript">
+        (function () {
+            {% for message in messages %}
+                $.toaster({
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+                        priority: "info",
+                        title: "Debug",
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                        priority: "info",
+                        title: "Info",
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        priority: "success",
+                        title: "Success",
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                        priority: "warning",
+                        title: "Warning",
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        priority: "danger",
+                        title: "Error",
+                    {% endif %}
+                    message: "{{ message.message }}"
+                });
+            {% endfor %}
+        })();
+        $("#menu").click(function () {
+            $("#menu_panel").slideToggle(500, function () {
+                // Animation complete.
+            });
+        });
+    </script>
+{% endblock %}
+</body>
+</html>
+
+
+
+

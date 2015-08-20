@@ -1,0 +1,23 @@
+{% extends "converter/base.html" %}
+
+{% block style %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        <button class="btn btn-default" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span>&nbsp;&nbsp;OK
+        </button>
+        <a class="btn btn-default" href="{% url "ss_list" %}"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>&nbsp;&nbsp;К списку систем
+        </a>
+    </form>
+{% endblock %}
+{#{% block scripts %}#}
+{#    {{ block.super }}#}
+{#{% endblock %}#}

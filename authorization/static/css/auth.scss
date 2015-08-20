@@ -1,0 +1,90 @@
+$green: #000000;
+$m_width: 512px;
+
+%borders {
+  box-shadow: 0 0 40px 1px darken($green, 15%);
+  border-radius: 8px;
+}
+
+.login_content {
+  height: 400px;
+  left: 50%;
+  margin: -295px 0 0 -255px;
+  position: absolute;
+  top: 50%;
+  width: $m_width;
+}
+
+.logo-img {
+  @extend %borders;
+  bottom: 15px;
+  position: relative;
+  width: $m_width;
+}
+
+.popup_window {
+  @extend %borders;
+  background: none repeat scroll 0 0 $green;
+  border: 1px solid $green;
+  float: left;
+}
+
+.login_window_content {
+  float: left;
+  margin: 40px;
+}
+
+.loginText {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #FFFFFF;
+  float: left;
+  font-size: 18px;
+  padding-bottom: 7px;
+}
+
+.login-field {
+  margin-bottom: 25px;
+  font-family: Arial, Verdana, Helvetica, sans-serifl;
+  font-size: 18px;
+  height: 30px;
+  width: 428px;
+}
+
+.btn {
+  border-radius: 8px;
+  margin: auto;
+  height: 30px;
+  width: 120px;
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: medium none;
+  color: $green;
+  font-family: Verdana, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.btn_section {
+//  text-align: center;
+  text-align: right;
+}
+
+.outer {
+  left: 0;
+  top: 0;
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: $m_width;
+}

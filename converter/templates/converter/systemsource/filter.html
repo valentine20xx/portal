@@ -1,0 +1,33 @@
+{% extends "converter/base.html" %}
+{% block title %}Отфильтровать cписок систем{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.code.auto_id }}">{{ form.code.label }} :</label>
+            {{ form.code }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.fullname.auto_id }}">{{ form.fullname.label }} : </label>
+            {{ form.fullname }}
+        </div>
+        <button id="ok" class="btn btn-default" type="submit"> <span
+                class="glyphicon glyphicon-ok"
+                aria-hidden="true"></span>&nbsp;&nbsp;OK</button>
+        <a id="clean" class="btn btn-default"> <span
+                class="glyphicon glyphicon-remove"
+                aria-hidden="true"></span>&nbsp;&nbsp;Сбросить фильтр</a>
+        <a id="back" class="btn btn-default" href="{% url "ss_list" %}"><span
+                class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>&nbsp;&nbsp;К списку систем</a>
+    </form>
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $("#clean").on("click", function (e) {
+            $("#{{ form.code.auto_id }}").val("")
+            $("#{{ form.fullname.auto_id }}").val("")
+        })
+    </script>
+{% endblock %}
